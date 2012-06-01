@@ -1,0 +1,99 @@
+
+=pod
+
+=head1 NAME
+
+Debug::DBI - Tool to monitor/dump DBI calls
+
+=head1 SYNOPSIS
+
+  To print all DBI calls incl. SQL statements and query results to
+  stdout.
+
+  In perl script:
+
+    use Debug::DBI::Default;
+
+  or from command line:
+
+    perl -MDebug::DBI::Default <script name>
+
+  For fine-graind control:
+
+    use Log::Any::Adapter
+    use DBI;
+    use Debug::DBI
+
+    Log::Any::Adapter->set(
+        {
+            category => 'Debug::DBI'
+        },
+        'FileHandle',
+    };
+
+    our $obj = Debug::DBI->new(
+       formatter     => Debug::DBI::Formatter->new,
+       hide_password => 0,
+       constraint => {
+          'default' => sub {
+              my ($call) = @_;
+
+              # ...
+
+              return 1;
+          }
+       }
+    )->install;
+
+=head1 DESCRIPTION
+
+This module allows you to trace and dump DBI calls.
+
+TODO
+ - Formatter:
+   - support multi-line values
+   - limit column width
+ - DBI
+   - Error handling: better support for RaiseError = 0; (Check return value and dbh->errstr!)
+
+
+=head1 ATTRIBUTES
+
+=head2 C<constraint>
+
+=head2 C<formatter>
+
+=head2 C<hide_password>
+
+=head2 C<log_category>
+
+=head2 C<max_rows>
+
+=head2 C<patch_map>
+
+=head2 C<patches>
+
+=head2 C<wrap_orig>
+
+=head1 METHODS
+
+=head1 SEE ALSO
+
+L<Log::Any|Log::Any>, L<Log::Any::Adapter|Log::Any::Adapter>
+
+=head1 AUTHOR
+
+Henry Tang
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright (C) 2011 Henry Tang
+
+Debug::DBI is provided "as is" and without any express or
+implied warranties, including, without limitation, the implied warranties
+of merchantibility and fitness for a particular purpose.
+
+This program is free software, you can redistribute it and/or modify it
+under the terms of the Artistic License version 2.0.
+
+=cut
